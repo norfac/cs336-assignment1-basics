@@ -9,7 +9,8 @@ import torch
 from jaxtyping import Bool, Float, Int
 from torch import Tensor
 
-import cs336_basics.bpe
+import cs336_basics.bpe, cs336_basics.tokenizer
+import cs336_basics.model
 
 def run_linear(
     d_in: int,
@@ -30,7 +31,8 @@ def run_linear(
         Float[Tensor, "... d_out"]: The transformed output of your linear module.
     """
 
-    raise NotImplementedError
+    return cs336_basics.model.Linear(d_in, d_out, weights=weights)(in_features)
+    #raise NotImplementedError
 
 
 def run_embedding(
@@ -51,8 +53,8 @@ def run_embedding(
     Returns:
         Float[Tensor, "... d_model"]: Batch of embeddings returned by your Embedding layer.
     """
-
-    raise NotImplementedError
+    return cs336_basics.model.Embedding(vocab_size, d_model, weights)(token_ids)
+    #raise NotImplementedError
 
 
 def run_swiglu(
@@ -84,7 +86,8 @@ def run_swiglu(
     # swiglu.w1.weight.data = w1_weight
     # swiglu.w2.weight.data = w2_weight
     # swiglu.w3.weight.data = w3_weight
-    raise NotImplementedError
+    #raise NotImplementedError
+    return cs336_basics.model.SwiGLU(d_model, d_ff, w1_weight, w2_weight, w3_weight)(in_features)
 
 
 def run_scaled_dot_product_attention(
@@ -379,7 +382,8 @@ def run_rmsnorm(
         Float[Tensor,"... d_model"]: Tensor of with the same shape as `in_features` with the output of running
         RMSNorm of the `in_features`.
     """
-    raise NotImplementedError
+    #raise NotImplementedError
+    return cs336_basics.model.RMSNorm(d_model, eps, weights)(in_features)
 
 
 def run_silu(in_features: Float[Tensor, " ..."]) -> Float[Tensor, " ..."]:
@@ -393,7 +397,8 @@ def run_silu(in_features: Float[Tensor, " ..."]) -> Float[Tensor, " ..."]:
         Float[Tensor,"..."]: of with the same shape as `in_features` with the output of applying
         SiLU to each element.
     """
-    raise NotImplementedError
+    #raise NotImplementedError
+    return cs336_basics.model.SiLU(in_features)
 
 
 def run_get_batch(
@@ -560,7 +565,9 @@ def get_tokenizer(
     Returns:
         A BPE tokenizer that uses the provided vocab, merges, and special tokens.
     """
-    raise NotImplementedError
+
+    return cs336_basics.tokenizer.Tokenizer(vocab, merges, special_tokens)
+    # raise NotImplementedError
 
 
 def run_train_bpe(

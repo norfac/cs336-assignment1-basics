@@ -11,7 +11,6 @@ import tiktoken
 
 from .adapters import get_tokenizer
 from .common import FIXTURES_PATH, gpt2_bytes_to_unicode
-
 VOCAB_PATH = FIXTURES_PATH / "gpt2_vocab.json"
 MERGES_PATH = FIXTURES_PATH / "gpt2_merges.txt"
 
@@ -283,6 +282,7 @@ def test_address_matches_tiktoken():
     corpus_path = FIXTURES_PATH / "address.txt"
     with open(corpus_path) as f:
         corpus_contents = f.read()
+
     reference_ids = reference_tokenizer.encode(corpus_contents)
     ids = tokenizer.encode(corpus_contents)
     assert ids == reference_ids
@@ -374,6 +374,7 @@ def test_encode_special_token_double_newline_non_whitespace():
         corpus_contents = f.read()
     reference_ids = reference_tokenizer.encode(corpus_contents, allowed_special={"<|endoftext|>"})
     ids = tokenizer.encode(corpus_contents)
+
     assert ids == reference_ids
 
     assert tokenizer.decode(ids) == corpus_contents
